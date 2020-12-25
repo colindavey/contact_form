@@ -1,14 +1,6 @@
 <head>
     <meta charset="utf-8">
     <title>Document</title>
-    <?php
-        $message = "BEFORE";
-        // if(isset($_POST["submitted"])) 
-        if ($_SERVER["REQUEST_METHOD"] === "POST")
-        { 
-            $message = "AFTER";
-        }
-    ?>
 </head>
 <body>
     <h1><?= $message ?></h1>
