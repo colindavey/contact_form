@@ -26,7 +26,7 @@
         <label for="message" class="">Message:</label>
         <span id="message-warn" style="display:inline;color:red"> <?= $message_warning ?></span>
         <br>
-		<textarea type="text" id="message" name="message" rows="3" value="<?= $message ?>"></textarea>
+		<textarea type="text" id="message" name="message" rows="3" class="form-control"><?= $message ?></textarea>
         <br><br>
 
         <button type="submit">Submit</button>

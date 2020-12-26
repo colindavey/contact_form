@@ -34,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     }
 }
 
+// Redirect to the thank-you page if successful
 if ($success) {
     header("location: thank_you.php");
 }
