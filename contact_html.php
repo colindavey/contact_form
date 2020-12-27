@@ -11,13 +11,13 @@
             <h1>Contact Colin Davey</h1>
             <form method="post" class="form-group">
                 <div class="form-group">
-                    <label for="name" >Your name:</label>
+                    <label for="name" >Name:</label>
                     <span id="name-warn" style="display:inline;color:red"> <?= $name_warning ?></span>
                     <input type="text" class="form-control" id="name" name="name" value="<?= $name ?>">
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Your email address:</label>
+                    <label for="email">Email address:</label>
                     <span id="emal-warn" style="display:inline;color:red"> <?= $email_warning ?></span>
                     <input type="email" class="form-control" id="email" name="email" value="<?= $email ?>">
                     <small id="emailHelp" class="form-text text-muted">Colin will never share your email with anyone else.</small>
