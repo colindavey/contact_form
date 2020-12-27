@@ -54,10 +54,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     $success = $success && $robot_success;
 
     // These assignments are so the html piece doesn't need longer array expressions
-    $name = $result["name"]["value"];
-    $email = $result["email"]["value"];
-    $subject = $result["subject"]["value"];
-    $message = $result["message"]["value"];
+    $name = html_escape($result["name"]["value"]);
+    $email = html_escape($result["email"]["value"]);
+    $subject = html_escape($result["subject"]["value"]);
+    $message = html_escape($result["message"]["value"]);
 
     $name_warning = $result["name"]["warning"];
     $email_warning = $result["email"]["warning"];
@@ -97,6 +97,11 @@ function is_success($carry, $item) {
 function get_check($var_name) {
     $bool = isset($_POST[$var_name]);
     return array($bool , $bool ? "checked" : "");
+}
+
+function html_escape(string &$unsafe_data): string
+{
+    return $unsafe_data = htmlspecialchars($unsafe_data, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
 }
 
 function dd($var, $do_die=true) {
