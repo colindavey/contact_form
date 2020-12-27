@@ -68,9 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
 
     // Send mail and redirect to the thank-you page if successful
     if ($success) {
-        // Not sure if this is necessary or has any effect
-        // $name_warning = $email_warning = $subject_warning = $message_warning = "";
-        // $robot_warning = "";
         $recipient = $to_email;
         $mailheader = 
             "From: {$from_email}\r\n".
