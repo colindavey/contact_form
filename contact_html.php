@@ -41,9 +41,9 @@
                 <input type="checkbox" value="yes" name="not_robot_check" id="not_robot_check" <?= $not_robot_check ?>>
                 <label for="not_robot_check">I am a not robot.</label>
             </div>
-            </fieldset>
-            <p id="robot-warn" style="color:red"> <?= $robot_warning ?></p>
-        <br><br>
+        </fieldset>
+        <span id="robot-warn" style="color:red"> <?= $robot_warning ?></span>
+        <br>
 
         <button type="submit">Submit</button>
     </form>

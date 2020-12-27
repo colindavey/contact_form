@@ -1,9 +1,19 @@
 <?php
+// secrets contains your email addresses, and is of the form:
+//   $from_email = <from address>;
+//   $to_email = <to address>;
+// where the from address is where the email will be sent from, e.g. forms@domain.com
+// and the to address is the recipient, e.g. support@domain.com. 
+// Note that the customers address will be the Reply-To. 
+require "secrets.php";
+
+// Not sure if this initialization is necessary or has any effect
 // $name_warning = $email_warning = $subject_warning = $message_warning = "";
 // $name = $email = $subject = $message = "";
 // $robot_warning = "";
 // $robot_check = "";
 // $not_robot_check = "";
+
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
     // Doing trim in loop below instead.
@@ -46,22 +56,39 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     // Add "are you a robot" to the success calculation
     $success = $success && $robot_success;
 
-    // Redirect to the thank-you page if successful
-    if ($success) {
-        header("location: thank_you.php");
-    }
-
     // These assignments are so the html piece doesn't need longer array expressions.
-    $name_warning = $result["name"]["warning"];
-    $email_warning = $result["email"]["warning"];
-    $subject_warning = $result["subject"]["warning"];
-    $message_warning = $result["message"]["warning"];
-
     $name = $result["name"]["value"];
     $email = $result["email"]["value"];
     $subject = $result["subject"]["value"];
     $message = $result["message"]["value"];
+
+    // Send mail and redirect to the thank-you page if successful
+    if ($success) {
+        // Not sure if this is necessary or has any effect
+        // $name_warning = $email_warning = $subject_warning = $message_warning = "";
+        // $robot_warning = "";
+        $recipient = $to_email;
+        $mailheader = 
+            "From: $from_email\r\n".
+            "Reply-To: {$email}\r\n"
+        ;
+        $summary=
+            "Name: $name <br>
+            Recipient: $recipient <br>
+            Subject: $subject <br>
+            Header: $mailheader <br>
+            Message: $message";
+        // dd($summary, false);
+        mail($recipient, $subject, $message, $mailheader) or die("Error!");
+        header("location: thank_you.php");
+    }
 }
+
+// These assignments are so the html piece doesn't need longer array expressions.
+$name_warning = $result["name"]["warning"];
+$email_warning = $result["email"]["warning"];
+$subject_warning = $result["subject"]["warning"];
+$message_warning = $result["message"]["warning"];
 require "contact_html.php";
 
 function is_success($carry, $item) {
