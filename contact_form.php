@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     // Add "are you a robot" to the success calculation
     $success = $success && $robot_success;
 
-    // These assignments are so the html piece doesn't need longer array expressions.
+    // These assignments are so the html piece doesn't need longer array expressions
     $name = $result["name"]["value"];
     $email = $result["email"]["value"];
     $subject = $result["subject"]["value"];
@@ -72,19 +72,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
             "From: $from_email\r\n".
             "Reply-To: {$email}\r\n"
         ;
-        $summary=
-            "Name: $name <br>
-            Recipient: $recipient <br>
-            Subject: $subject <br>
-            Header: $mailheader <br>
-            Message: $message";
+        // $summary=
+        //     "Name: $name <br>
+        //     Recipient: $recipient <br>
+        //     Subject: $subject <br>
+        //     Header: $mailheader <br>
+        //     Message: $message";
         // dd($summary, false);
         mail($recipient, $subject, $message, $mailheader) or die("Error!");
         header("location: thank_you.php");
     }
 }
 
-// These assignments are so the html piece doesn't need longer array expressions.
+// These assignments are so the html piece doesn't need longer array expressions
 $name_warning = $result["name"]["warning"];
 $email_warning = $result["email"]["warning"];
 $subject_warning = $result["subject"]["warning"];
