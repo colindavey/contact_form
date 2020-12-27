@@ -6,14 +6,10 @@
 // and the to address is the recipient, e.g. support@domain.com. 
 // Note that the customers address will be the Reply-To. 
 require "secrets.php";
-
-// Not sure if this initialization is necessary or has any effect
-// $name_warning = $email_warning = $subject_warning = $message_warning = "";
-// $name = $email = $subject = $message = "";
-// $robot_warning = "";
-// $robot_check = "";
-// $not_robot_check = "";
-// $cc_check = "";
+$name_warning = $email_warning = $subject_warning = $message_warning = "";
+$name = $email = $subject = $message = "";
+$robot_warning = $robot_check = $not_robot_check = "";
+$cc_check = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
@@ -63,6 +59,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     $subject = $result["subject"]["value"];
     $message = $result["message"]["value"];
 
+    $name_warning = $result["name"]["warning"];
+    $email_warning = $result["email"]["warning"];
+    $subject_warning = $result["subject"]["warning"];
+    $message_warning = $result["message"]["warning"];
+
     list($cc_bool, $cc_check) = get_check("cc_check");
 
     // Send mail and redirect to the thank-you page if successful
@@ -90,11 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     }
 }
 
-// These assignments are so the html piece doesn't need longer array expressions
-$name_warning = $result["name"]["warning"];
-$email_warning = $result["email"]["warning"];
-$subject_warning = $result["subject"]["warning"];
-$message_warning = $result["message"]["warning"];
 require "contact_html.php";
 
 function is_success($carry, $item) {
