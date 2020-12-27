@@ -23,7 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     foreach(["name", "email", "subject", "message"] as $var_name) {
         // Does this need stripslashes() or htmlspecialchars()?
         $value = trim($_POST[$var_name]);
-        $result[$var_name] = array("value" => $value, "warning" => empty($value) ? "Required" : "");
+        $result[$var_name] = array(
+            "value" => $value, 
+            "warning" => empty($value) ? "Required" : "",
+            "safe" => html_escape($value)
+        );
     }
 
     // If there is a name, check that it is valid
@@ -44,6 +48,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     // Calculate success based on the above
     $success = array_reduce($result, "is_success", true);
 
+    // These assignments are so the html piece doesn't need longer array expressions
+    $name = $result["name"]["safe"];
+    $email = $result["email"]["safe"];
+    $subject = $result["subject"]["safe"];
+    $message = $result["message"]["safe"];
+
+    $name_warning = $result["name"]["warning"];
+    $email_warning = $result["email"]["warning"];
+    $subject_warning = $result["subject"]["warning"];
+    $message_warning = $result["message"]["warning"];
+
     // Handle the "are you a robot" checkboxes
     list($robot_bool, $robot_check) = get_check("robot_check");
     list($not_robot_bool, $not_robot_check) = get_check("not_robot_check");
@@ -52,17 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
 
     // Add "are you a robot" to the success calculation
     $success = $success && $robot_success;
-
-    // These assignments are so the html piece doesn't need longer array expressions
-    $name = html_escape($result["name"]["value"]);
-    $email = html_escape($result["email"]["value"]);
-    $subject = html_escape($result["subject"]["value"]);
-    $message = html_escape($result["message"]["value"]);
-
-    $name_warning = $result["name"]["warning"];
-    $email_warning = $result["email"]["warning"];
-    $subject_warning = $result["subject"]["warning"];
-    $message_warning = $result["message"]["warning"];
 
     list($cc_bool, $cc_check) = get_check("cc_check");
 
