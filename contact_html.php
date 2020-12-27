@@ -8,7 +8,7 @@
     </head>
     <body>
         <section class="m-5">
-            <h1>Contact Colin Davey</h1>
+            <h1>Email Colin Davey</h1>
             <form method="post" class="form-group">
                 <div class="form-group">
                     <label for="name" >Name:</label>
@@ -21,6 +21,11 @@
                     <span id="emal-warn" style="display:inline;color:red"> <?= $email_warning ?></span>
                     <input type="email" class="form-control" id="email" name="email" value="<?= $email ?>">
                     <small id="emailHelp" class="form-text text-muted">Colin will never share your email with anyone else.</small>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" value="yes" name="cc_check" id="cc_check" <?= $cc_check ?>>
+                    <label for="cc-check" class="form-check-label">Send me a copy of this email.</label>
                 </div>
 
                 <div class="form-group">

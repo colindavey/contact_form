@@ -13,6 +13,7 @@ require "secrets.php";
 // $robot_warning = "";
 // $robot_check = "";
 // $not_robot_check = "";
+// $cc_check = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
@@ -51,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     list($robot_bool, $robot_check) = get_check("robot_check");
     list($not_robot_bool, $not_robot_check) = get_check("not_robot_check");
     $robot_success = !$robot_bool && $not_robot_bool;
-    $robot_warning = !$robot_success ? "Robots may not contact Colin Davey" : "";
+    $robot_warning = !$robot_success ? "Robots may not email Colin Davey" : "";
 
     // Add "are you a robot" to the success calculation
     $success = $success && $robot_success;
@@ -62,6 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     $subject = $result["subject"]["value"];
     $message = $result["message"]["value"];
 
+    list($cc_bool, $cc_check) = get_check("cc_check");
+
     // Send mail and redirect to the thank-you page if successful
     if ($success) {
         // Not sure if this is necessary or has any effect
@@ -69,9 +72,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         // $robot_warning = "";
         $recipient = $to_email;
         $mailheader = 
-            "From: $from_email\r\n".
-            "Reply-To: {$email}\r\n"
+            "From: {$from_email}\r\n".
+            "Reply-To: {$name} <{$email}>\r\n"
         ;
+        if ($cc_bool) {
+            $mailheader = $mailheader."CC: {$email}\r\n";
+        }
         // $summary=
         //     "Name: $name <br>
         //     Recipient: $recipient <br>
