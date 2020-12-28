@@ -15,7 +15,7 @@ $cc_check = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
-    $_POST = array_map("trim", $_POST);
+    $_POST = trim_array($_POST);
 
     // Note: array_map() isn't able to create an associate array. There is a trick for doing it
     // with array_reduce(), but this loop seems clearer. 
@@ -88,8 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         // dd($summary);
         mail($to_email, $subject, $message, $mailheader) or die("Error!");
         header("location: thank_you.php");
-        // exit;
-        echo 'after header';
+        exit;
     }
 }
 
