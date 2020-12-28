@@ -9,7 +9,7 @@ require "secrets.php";
 require "contact_functions.php";
 require "utility_functions.php";
 $name_warning = $email_warning = $subject_warning = $message_warning = "";
-$name = $email = $subject = $message = "";
+// $name = $email = $subject = $message = "";
 $robot_warning = $robot_check = $not_robot_check = "";
 $cc_check = "";
 
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         $result[$var_name] = array(
             "value" => $value, 
             "warning" => empty($value) ? "Required" : "",
-            "safe" => html_escape($value)
+            // "safe" => html_escape($value)
         );
     }
 
@@ -49,10 +49,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     $success = array_reduce($result, "is_success", true);
 
     // These assignments are so the html piece doesn't need longer array expressions
-    $name = $result["name"]["safe"];
-    $email = $result["email"]["safe"];
-    $subject = $result["subject"]["safe"];
-    $message = $result["message"]["safe"];
+    // $name = $result["name"]["safe"];
+    // $email = $result["email"]["safe"];
+    // $subject = $result["subject"]["safe"];
+    // $message = $result["message"]["safe"];
 
     $name_warning = $result["name"]["warning"];
     $email_warning = $result["email"]["warning"];
