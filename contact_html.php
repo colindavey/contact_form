@@ -37,7 +37,7 @@
                 <div class="form-group">
                     <label for="message">Message:</label>
                     <span id="message-warn" style="display:inline;color:red"> <?= $message_warning ?></span>
-                    <textarea type="text" class="form-control" id="message" name="message" rows="3"><?= $message ?></textarea>
+                    <textarea class="form-control" id="message" name="message" rows="3"><?= $message ?></textarea>
                 </div>
 
                 <fieldset class="form-group">

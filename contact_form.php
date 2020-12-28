@@ -6,6 +6,8 @@
 // and the to address is the recipient, e.g. support@domain.com. 
 // Note that the customers address will be the Reply-To. 
 require "secrets.php";
+require "contact_functions.php";
+require "utility_functions.php";
 $name_warning = $email_warning = $subject_warning = $message_warning = "";
 $name = $email = $subject = $message = "";
 $robot_warning = $robot_check = $not_robot_check = "";
@@ -13,16 +15,14 @@ $cc_check = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
-    // Doing trim in loop below instead.
-    // $_POST = array_map("trim", $_POST);
+    $_POST = array_map("trim", $_POST);
 
     // Note: array_map() isn't able to create an associate array. There is a trick for doing it
     // with array_reduce(), but this loop seems clearer. 
     // https://stackoverflow.com/questions/11563119/how-to-convert-an-array-of-arrays-or-objects-to-an-associative-array
     $result = array();
     foreach(["name", "email", "subject", "message"] as $var_name) {
-        // Does this need stripslashes() or htmlspecialchars()?
-        $value = trim($_POST[$var_name]);
+        $value = $_POST[$var_name];
         $result[$var_name] = array(
             "value" => $value, 
             "warning" => empty($value) ? "Required" : "",
@@ -72,46 +72,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
 
     // Send mail and redirect to the thank-you page if successful
     if ($success) {
-        $recipient = $to_email;
         $mailheader = 
-            "From: {$from_email}\r\n".
-            "Reply-To: {$name} <{$email}>\r\n"
+            "From: $from_email\r\n".
+            "Reply-To: $name <$email>\r\n"
         ;
         if ($cc_bool) {
-            $mailheader = $mailheader."CC: {$email}\r\n";
+            $mailheader .= "CC: $email\r\n";
         }
         // $summary=
         //     "Name: $name <br>
-        //     Recipient: $recipient <br>
+        //     Recipient: $to_email <br>
         //     Subject: $subject <br>
         //     Header: $mailheader <br>
         //     Message: $message";
-        // dd($summary, false);
-        mail($recipient, $subject, $message, $mailheader) or die("Error!");
+        // dd($summary);
+        mail($to_email, $subject, $message, $mailheader) or die("Error!");
         header("location: thank_you.php");
+        // exit;
+        echo 'after header';
     }
 }
 
 require "contact_html.php";
-
-function is_success($carry, $item) {
-    return $carry && empty($item["warning"]);
-}
-
-function get_check($var_name) {
-    $bool = isset($_POST[$var_name]);
-    return array($bool , $bool ? "checked" : "");
-}
-
-function html_escape(string &$unsafe_data): string
-{
-    return $unsafe_data = htmlspecialchars($unsafe_data, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
-}
-
-function dd($var, $do_die=true) {
-    var_dump($var);
-    echo "<br>";
-    if ($do_die) {
-        die();
-    }
-}
