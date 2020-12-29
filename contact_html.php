@@ -12,14 +12,14 @@
             <form method="post" class="form-group">
                 <div class="form-group">
                     <label for="name" >Name:</label>
-                    <span id="name-warn" style="display:inline;color:red"> <?= $name_warning ?></span>
+                    <span id="name-warn" style="display:inline;color:red"> <?= $error["name"] ?></span>
                     <input type="text" class="form-control" id="name" name="name" 
                         value="<?= !empty($_POST["name"]) ? html_escape($_POST["name"]) : '' ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email address:</label>
-                    <span id="emal-warn" style="display:inline;color:red"> <?= $email_warning ?></span>
+                    <span id="emal-warn" style="display:inline;color:red"> <?= $error["email"] ?></span>
                     <input type="email" class="form-control" id="email" name="email" 
                         value="<?= !empty($_POST["email"]) ? html_escape($_POST["email"]) : '' ?>">
                     <small id="emailHelp" class="form-text text-muted">Colin will never share your email with anyone else.</small>
@@ -32,14 +32,14 @@
 
                 <div class="form-group">
                     <label for="subject">Subject:</label>
-                    <span id="subject-warn" style="display:inline;color:red"> <?= $subject_warning ?></span>
+                    <span id="subject-warn" style="display:inline;color:red"> <?= $error["subject"] ?></span>
                     <input type="text" class="form-control" id="subject" name="subject" 
                         value="<?= !empty($_POST["subject"]) ? html_escape($_POST["subject"]) : '' ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="message">Message:</label>
-                    <span id="message-warn" style="display:inline;color:red"> <?= $message_warning ?></span>
+                    <span id="message-warn" style="display:inline;color:red"> <?= $error["message"] ?></span>
                     <textarea class="form-control" id="message" name="message" rows="3"><?= !empty($_POST["message"]) ? html_escape($_POST["message"]) : '' ?></textarea>
                 </div>
 

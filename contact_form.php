@@ -8,56 +8,33 @@
 require "secrets.php";
 require "contact_functions.php";
 require "utility_functions.php";
-$name_warning = $email_warning = $subject_warning = $message_warning = "";
-// $name = $email = $subject = $message = "";
+$whitelist = ["name", "email", "subject", "message", "robot_check", "not_robot_check"];
+$required = ["name", "email", "subject", "message"];
+$error = required_field_init($required);
 $robot_warning = $robot_check = $not_robot_check = "";
 $cc_check = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
+    validate_white_list($whitelist);
     $_POST = trim_array($_POST);
-
-    // Note: array_map() isn't able to create an associate array. There is a trick for doing it
-    // with array_reduce(), but this loop seems clearer. 
-    // https://stackoverflow.com/questions/11563119/how-to-convert-an-array-of-arrays-or-objects-to-an-associative-array
-    $result = array();
-    foreach(["name", "email", "subject", "message"] as $var_name) {
-        $value = $_POST[$var_name];
-        $result[$var_name] = array(
-            "value" => $value, 
-            "warning" => empty($value) ? "Required" : "",
-            // "safe" => html_escape($value)
-        );
-    }
+    $error = required_field_check($required, $_POST);
 
     // If there is a name, check that it is valid
-    if (empty($result["name"]["warning"])) {
-        if (!preg_match("/^[a-zA-Z-' ]*$/", $result["name"]["value"])) {
-            $result["name"]["warning"] = "Only letters, apostrophes, dashes and white space allowed";
+    if (!empty($_POST["name"])) {
+        if (!preg_match("/^[a-zA-Z-' ]*$/", $_POST["name"])) {
+            $error["name"] = "Only letters, apostrophes, dashes and white space allowed";
         }
     }
 
     // If there is an email, check that it is valid
-    if (empty($result["email"]["warning"])) {
-        if (!filter_var($result["email"]["value"], FILTER_VALIDATE_EMAIL)) {
-            $result["email"]["warning"] = "Invalid email format";
+    if (!empty($_POST["email"])) {
+        if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            $error["email"] = "Invalid email format";
         }
     }
 
-    // Success means there are no warnings, ie, the warnings are all empty
-    // Calculate success based on the above
-    $success = array_reduce($result, "is_success", true);
-
-    // These assignments are so the html piece doesn't need longer array expressions
-    // $name = $result["name"]["safe"];
-    // $email = $result["email"]["safe"];
-    // $subject = $result["subject"]["safe"];
-    // $message = $result["message"]["safe"];
-
-    $name_warning = $result["name"]["warning"];
-    $email_warning = $result["email"]["warning"];
-    $subject_warning = $result["subject"]["warning"];
-    $message_warning = $result["message"]["warning"];
+    $success = array_reduce($error, "is_success", true);
 
     // Handle the "are you a robot" checkboxes
     list($robot_bool, $robot_check) = get_check("robot_check");
