@@ -10,13 +10,10 @@ require "contact_functions.php";
 require "utility_functions.php";
 $whitelist = ["name", "email", "subject", "message", "robot_check", "not_robot_check"];
 $required = ["name", "email", "subject", "message"];
-$error = required_field_init($required);
-$robot_warning = $robot_check = $not_robot_check = "";
-$cc_check = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
-    validate_white_list($whitelist);
+    validate_white_list($whitelist, $_POST);
     $_POST = trim_array($_POST);
     $error = required_field_check($required, $_POST);
 
@@ -37,23 +34,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     $success = array_reduce($error, "is_success", true);
 
     // Handle the "are you a robot" checkboxes
-    list($robot_bool, $robot_check) = get_check("robot_check");
-    list($not_robot_bool, $not_robot_check) = get_check("not_robot_check");
+    $robot_bool = isset($_POST["robot_check"]);
+    $not_robot_bool = isset($_POST["not_robot_check"]);
+    // Of the four possible combinations of the robot/not-robot checkboxes
+    // (off/off off/on on/off on/on) the only allowed one is robot unchecked, 
+    // and not-robot checked. 
     $robot_success = !$robot_bool && $not_robot_bool;
-    $robot_warning = !$robot_success ? "Robots may not email Colin Davey" : "";
+    $error["robot"] = !$robot_success ? "Robots may not email Colin Davey" : "";
 
     // Add "are you a robot" to the success calculation
     $success = $success && $robot_success;
 
-    list($cc_bool, $cc_check) = get_check("cc_check");
-
-    // Send mail and redirect to the thank-you page if successful
+    // If successful, send mail and redirect to the thank-you page
     if ($success) {
         $mailheader = 
             "From: $from_email\r\n".
             "Reply-To: $name <$email>\r\n"
         ;
-        if ($cc_bool) {
+        if (isset($_POST["cc_check"])) {
             $mailheader .= "CC: $email\r\n";
         }
         // $summary=

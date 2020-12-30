@@ -4,11 +4,6 @@ function is_success($carry, $item) {
     return $carry && empty($item);
 }
 
-function get_check($var_name) {
-    $bool = isset($_POST[$var_name]);
-    return array($bool , $bool ? "checked" : "");
-}
-
 function html_escape(string &$unsafe_data): string
 {
     return $unsafe_data = htmlspecialchars($unsafe_data, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
@@ -44,9 +39,9 @@ function required_field_init(array $requiredFields): array
     return $error;
 }
 
-function validate_white_list(array $whitelist)
+function validate_white_list(array $whitelist, array $request_array)
 {
-    foreach ($_POST as $key => $val)
+    foreach ($request_array as $key => $val)
     {
         if (!in_array($key, $whitelist, true))
         {

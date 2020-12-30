@@ -8,4 +8,5 @@ function dd($data)
 function dump(...$data)
 {
     var_dump(...$data);
+    echo("<br>");
 }
