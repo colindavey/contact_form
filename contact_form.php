@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     }
 
     if (isset($trimmed_post["robot_check"]) || !isset($trimmed_post["not_robot_check"])) {
-        $error["robot"] = !$robot_success ? "Robots may not email Colin Davey" : "";
+        $error["robot"] = "Robots may not email Colin Davey";
     }
 
     // If successful, send mail and redirect to the thank-you page
