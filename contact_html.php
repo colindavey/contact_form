@@ -14,43 +14,38 @@
                     <label for="name" >Name:</label>
                     <span id="name-warn" style="display:inline;color:red"> <?= !empty($error["name"]) ? $error["name"] : "" ?></span>
                     <input type="text" class="form-control" id="name" name="name" 
-                        value="<?= !empty($_POST["name"]) ? html_escape($_POST["name"]) : '' ?>">
+                        value="<?= !empty($trimmed_post["name"]) ? html_escape($trimmed_post["name"]) : '' ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email address:</label>
                     <span id="emal-warn" style="display:inline;color:red"> <?= !empty($error["email"]) ? $error["email"] : '' ?></span>
                     <input type="email" class="form-control" id="email" name="email" 
-                        value="<?= !empty($_POST["email"]) ? html_escape($_POST["email"]) : '' ?>">
+                        value="<?= !empty($trimmed_post["email"]) ? html_escape($trimmed_post["email"]) : '' ?>">
                     <small id="emailHelp" class="form-text text-muted">Colin will never share your email with anyone else.</small>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" value="yes" name="cc_check" id="cc_check" <?= !empty($_POST["cc_check"]) ? 'checked' : '' ?>>
-                    <label for="cc-check" class="form-check-label">Send me a copy of this email.</label>
                 </div>
 
                 <div class="form-group">
                     <label for="subject">Subject:</label>
                     <span id="subject-warn" style="display:inline;color:red"> <?= !empty($error["subject"]) ? $error["subject"] : '' ?></span>
                     <input type="text" class="form-control" id="subject" name="subject" 
-                        value="<?= !empty($_POST["subject"]) ? html_escape($_POST["subject"]) : '' ?>">
+                        value="<?= !empty($trimmed_post["subject"]) ? html_escape($trimmed_post["subject"]) : '' ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="message">Message:</label>
                     <span id="message-warn" style="display:inline;color:red"> <?= !empty($error["message"]) ? $error["message"] : '' ?></span>
-                    <textarea class="form-control" id="message" name="message" rows="3"><?= !empty($_POST["message"]) ? html_escape($_POST["message"]) : '' ?></textarea>
+                    <textarea class="form-control" id="message" name="message" rows="3"><?= !empty($trimmed_post["message"]) ? html_escape($trimmed_post["message"]) : '' ?></textarea>
                 </div>
 
                 <fieldset class="form-group">
                     <legend>Please check the boxes that apply:</legend>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" value="yes" name="robot_check" id="robot_check" <?= !empty($_POST["robot_check"]) ? 'checked' : '' ?>>
+                        <input type="checkbox" class="form-check-input" value="yes" name="robot_check" id="robot_check" <?= !empty($trimmed_post["robot_check"]) ? 'checked' : '' ?>>
                         <label for="robot-check" class="form-check-label">I am a robot.</label>
                     </div>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" value="yes" name="not_robot_check" id="not_robot_check" <?= !empty($_POST["not_robot_check"]) ? 'checked' : '' ?>>
+                        <input type="checkbox" class="form-check-input" value="yes" name="not_robot_check" id="not_robot_check" <?= !empty($trimmed_post["not_robot_check"]) ? 'checked' : '' ?>>
                         <label for="not_robot_check" class="form-check-label">I am a not robot.</label>
                         <span id="robot-warn" style="color:red"> <?= !empty($error["robot"]) ? $error["robot"] : "" ?></span>
                     </div>

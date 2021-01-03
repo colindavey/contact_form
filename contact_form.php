@@ -14,54 +14,34 @@ $required = ["name", "email", "subject", "message"];
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
     validate_white_list($whitelist, $_POST);
-    $_POST = trim_array($_POST);
-    $error = required_field_check($required, $_POST);
+    $trimmed_post = trim_array($_POST);
+    $error = required_field_check($required, $trimmed_post);
 
-    // If there is a name, check that it is valid
-    if (!empty($_POST["name"])) {
-        if (!preg_match("/^[a-zA-Z-' ]*$/", $_POST["name"])) {
-            $error["name"] = "Only letters, apostrophes, dashes and white space allowed";
-        }
+    //  Check if the name contains illegal characters
+    if (!preg_match("/^[a-zA-Z-' ]*$/", $trimmed_post["name"])) {
+        $error["name"] = "Only letters, apostrophes, dashes and white space allowed";
     }
 
     // If there is an email, check that it is valid
-    if (!empty($_POST["email"])) {
-        if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+    if (!empty($trimmed_post["email"])) {
+        if (!filter_var($trimmed_post["email"], FILTER_VALIDATE_EMAIL)) {
             $error["email"] = "Invalid email format";
         }
     }
 
-    $success = array_reduce($error, "is_success", true);
-
-    // Handle the "are you a robot" checkboxes
-    $robot_bool = isset($_POST["robot_check"]);
-    $not_robot_bool = isset($_POST["not_robot_check"]);
-    // Of the four possible combinations of the robot/not-robot checkboxes
-    // (off/off off/on on/off on/on) the only allowed one is robot unchecked, 
-    // and not-robot checked. 
-    $robot_success = !$robot_bool && $not_robot_bool;
-    $error["robot"] = !$robot_success ? "Robots may not email Colin Davey" : "";
-
-    // Add "are you a robot" to the success calculation
-    $success = $success && $robot_success;
+    if (isset($trimmed_post["robot_check"]) || !isset($trimmed_post["not_robot_check"])) {
+        $error["robot"] = !$robot_success ? "Robots may not email Colin Davey" : "";
+    }
 
     // If successful, send mail and redirect to the thank-you page
-    if ($success) {
+    if (!$error) {
         $mailheader = 
             "From: $from_email\r\n".
-            "Reply-To: $name <$email>\r\n"
+            "Reply-To: ".$trimmed_post["name"]." <".$trimmed_post["email"].">\r\n"
         ;
-        if (isset($_POST["cc_check"])) {
-            $mailheader .= "CC: $email\r\n";
-        }
-        // $summary=
-        //     "Name: $name <br>
-        //     Recipient: $to_email <br>
-        //     Subject: $subject <br>
-        //     Header: $mailheader <br>
-        //     Message: $message";
-        // dd($summary);
-        mail($to_email, $subject, $message, $mailheader) or die("Error!");
+        // $mailheader .= "CC: $email\r\n";
+        mail($to_email, $trimmed_post["subject"], $trimmed_post["message"], $mailheader) or die("Error!");
+
         header("location: thank_you.php");
         exit;
     }
