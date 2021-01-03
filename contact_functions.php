@@ -45,7 +45,24 @@ function validate_white_list(array $whitelist, array $request_array)
     {
         if (!in_array($key, $whitelist, true))
         {
-            die('Hack-Attempt Detected. Please use only the fields in the form');
+            // die('Hack-Attempt Detected. Please use only the fields in the form.');
+            // die('Hack-Attempt Detected.');
+            hack_attempt("fields");
         }
     }
+}
+function validate_token($session, $post, $expired_page) {
+    if ($session['token']!=$post['token']) {
+        hack_attempt("token");
+    } else if (time() >= $session['token-expire']) {
+        redirect($expired_page);
+    }
+}
+
+function redirect($location) {
+    header("location: ".$location);
+}
+
+function hack_attempt($text) {
+    die('Hack-Attempt Detected. '.$text);
 }

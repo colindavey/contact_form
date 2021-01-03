@@ -8,11 +8,14 @@
 require "secrets.php";
 require "contact_functions.php";
 require "utility_functions.php";
-$whitelist = ["name", "email", "subject", "message", "robot_check", "not_robot_check"];
+
+session_start();
+$whitelist = ["name", "email", "subject", "message", "robot_check", "not_robot_check", "token"];
 $required = ["name", "email", "subject", "message"];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
+    validate_token($_SESSION, $_POST, "expired.php");
     validate_white_list($whitelist, $_POST);
     $trimmed_post = trim_array($_POST);
     $error = required_field_check($required, $trimmed_post);
@@ -42,9 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         // $mailheader .= "CC: $email\r\n";
         mail($to_email, $trimmed_post["subject"], $trimmed_post["message"], $mailheader) or die("Error!");
 
-        header("location: thank_you.php");
+        redirect("thank_you.php");
         exit;
     }
 }
-
+// $expiration_time = 5; // short time for testing purposes
+$expiration_time = 3600; // 1 hour = 3600 secs
+$_SESSION['token'] = bin2hex(random_bytes(32));
+$_SESSION['token-expire'] = time() + $expiration_time;
 require "contact_html.php";
