@@ -52,7 +52,7 @@
                 </fieldset>
                 <!-- invalid token for testing -->
                 <!-- <input type="hidden" name="token" value="foo"/> -->
-                <input type="hidden" name="token" value="<?=$_SESSION['token']?>"/>
+                <input type="hidden" name="token" value="<?=$_SESSION['token']?>">
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
