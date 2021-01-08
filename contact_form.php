@@ -15,7 +15,7 @@ $required = ["name", "email", "subject", "message"];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
-    validate_token($_SESSION, $_POST, "expired.php");
+    validate_token($_SESSION, $_POST, "contact_expired.php");
     validate_white_list($whitelist, $_POST);
     $trimmed_post = trim_array($_POST);
     $error = required_field_check($required, $trimmed_post);
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         // $mailheader .= "CC: $email\r\n";
         mail($to_email, $trimmed_post["subject"], $trimmed_post["message"], $mailheader) or die("Error!");
 
-        redirect("thank_you.php");
+        redirect("contact_thank_you.php");
         exit;
     }
 }
