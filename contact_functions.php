@@ -68,7 +68,8 @@ function validate_white_list(array $whitelist, array $request_array)
 }
 function validate_token($session, $post, $expired_page) {
     if ($session['token']!=$post['token']) {
-        hack_attempt("token");
+        // hack_attempt("token");
+        redirect($expired_page);
     } else if (time() >= $session['token-expire']) {
         redirect($expired_page);
     }
