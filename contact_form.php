@@ -15,12 +15,12 @@ $error_list = ["name", "email", "subject", "message", "robot"];
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
     $whitelist = ["name", "email", "subject", "message", "robot_check", "not_robot_check", "token"];
-    $required_list = ["name", "email", "subject", "message"];
+    $text_field_list = ["name", "email", "subject", "message"];
 
     validate_token($_SESSION, $_POST, "contact_expired.php");
     validate_white_list($whitelist, $_POST);
     $trimmed_post = trim_array($_POST);
-    $errors = required_field_check($required_list, $trimmed_post);
+    $errors = required_field_check($text_field_list, $trimmed_post);
 
     //  Check if the name contains illegal characters
     if (!preg_match("/^[a-zA-Z-' ]*$/", $trimmed_post["name"])) {
@@ -49,6 +49,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
 
         redirect("contact_thank_you.php");
         exit;
+    } else {
+        $values = html_escape_array($trimmed_post, $text_field_list);
+        $values["robot_check"] = isset($trimmed_post["robot_check"]) ? 'checked' : '';
+        $values["not_robot_check"] = isset($trimmed_post["not_robot_check"]) ? 'checked' : '';
     }
 } else {
     $errors = [];

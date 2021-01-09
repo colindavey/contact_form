@@ -14,14 +14,14 @@
                     <label for="name" >Name:</label>
                     <span id="name-warn" style="display:inline;color:red"> <?= $errors["name"] ?></span>
                     <input type="text" class="form-control" id="name" name="name" 
-                        value="<?= !empty($trimmed_post["name"]) ? html_escape($trimmed_post["name"]) : '' ?>">
+                        value="<?= $values["name"] ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email address:</label>
                     <span id="emal-warn" style="display:inline;color:red"> <?= $errors["email"] ?></span>
                     <input type="email" class="form-control" id="email" name="email" 
-                        value="<?= !empty($trimmed_post["email"]) ? html_escape($trimmed_post["email"]) : '' ?>">
+                        value="<?= $values["email"] ?>">
                     <small id="emailHelp" class="form-text text-muted">Colin will never share your email with anyone else.</small>
                 </div>
 
@@ -29,7 +29,7 @@
                     <label for="subject">Subject:</label>
                     <span id="subject-warn" style="display:inline;color:red"> <?= $errors["subject"] ?></span>
                     <input type="text" class="form-control" id="subject" name="subject" 
-                        value="<?= !empty($trimmed_post["subject"]) ? html_escape($trimmed_post["subject"]) : '' ?>">
+                        value="<?= $values["subject"] ?>">
                 </div>
 
                 <div class="form-group">
@@ -41,11 +41,11 @@
                 <fieldset class="form-group">
                     <legend>Please check the boxes that apply:</legend>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" value="yes" name="robot_check" id="robot_check" <?= !empty($trimmed_post["robot_check"]) ? 'checked' : '' ?>>
+                        <input type="checkbox" class="form-check-input" value="yes" name="robot_check" id="robot_check" <?= $values["robot_check"] ?>>
                         <label for="robot-check" class="form-check-label">I am a robot.</label>
                     </div>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" value="yes" name="not_robot_check" id="not_robot_check" <?= !empty($trimmed_post["not_robot_check"]) ? 'checked' : '' ?>>
+                        <input type="checkbox" class="form-check-input" value="yes" name="not_robot_check" id="not_robot_check" <?= $values["not_robot_check"] ?>>
                         <label for="not_robot_check" class="form-check-label">I am a not robot.</label>
                         <span id="robot-warn" style="color:red"> <?= $errors["robot"] ?></span>
                     </div>
