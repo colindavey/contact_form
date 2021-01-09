@@ -30,13 +30,21 @@ function required_field_check(array $requiredFields, array $requestArray): array
     return $error;
 }
 
-function required_field_init(array $requiredFields): array
+function fill_out_fields($array, $fields)
 {
-    $error = array();
-    foreach ($requiredFields as $field) {
-        $error[$field] = '';
+    foreach ($fields as $field) {
+        $array[$field] = !empty($array[$field]) ? $array[$field] : "";
     }
-    return $error;
+    return $array;
+}
+
+function init_empty_array(array $fields): array
+{
+    $array = [];
+    foreach ($fields as $field) {
+        $array[$field] = '';
+    }
+    return $array;
 }
 
 function validate_white_list(array $whitelist, array $request_array)

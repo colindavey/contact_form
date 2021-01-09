@@ -10,34 +10,36 @@ require "contact_functions.php";
 require "utility_functions.php";
 
 session_start();
-$whitelist = ["name", "email", "subject", "message", "robot_check", "not_robot_check", "token"];
-$required = ["name", "email", "subject", "message"];
+$error_list = ["name", "email", "subject", "message", "robot"];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 { 
+    $whitelist = ["name", "email", "subject", "message", "robot_check", "not_robot_check", "token"];
+    $required_list = ["name", "email", "subject", "message"];
+
     validate_token($_SESSION, $_POST, "contact_expired.php");
     validate_white_list($whitelist, $_POST);
     $trimmed_post = trim_array($_POST);
-    $error = required_field_check($required, $trimmed_post);
+    $errors = required_field_check($required_list, $trimmed_post);
 
     //  Check if the name contains illegal characters
     if (!preg_match("/^[a-zA-Z-' ]*$/", $trimmed_post["name"])) {
-        $error["name"] = "Only letters, apostrophes, dashes and white space allowed";
+        $errors["name"] = "Only letters, apostrophes, dashes and white space allowed";
     }
 
     // If there is an email, check that it is valid
     if (!empty($trimmed_post["email"])) {
         if (!filter_var($trimmed_post["email"], FILTER_VALIDATE_EMAIL)) {
-            $error["email"] = "Invalid email format";
+            $errors["email"] = "Invalid email format";
         }
     }
 
     if (isset($trimmed_post["robot_check"]) || !isset($trimmed_post["not_robot_check"])) {
-        $error["robot"] = "Robots may not email Colin Davey";
+        $errors["robot"] = "Robots may not email Colin Davey";
     }
 
     // If successful, send mail and redirect to the thank-you page
-    if (!$error) {
+    if (!$errors) {
         $mailheader = 
             "From: $from_email\r\n".
             "Reply-To: ".$trimmed_post["name"]." <".$trimmed_post["email"].">\r\n"
@@ -48,7 +50,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         redirect("contact_thank_you.php");
         exit;
     }
+} else {
+    $errors = [];
+    $value_list = ["name", "email", "subject", "message", "robot_check", "not_robot_check"];
+    $values = init_empty_array($value_list);
 }
+$errors = fill_out_fields($errors, $error_list);
 // $expiration_time = 5; // short time for testing purposes
 $expiration_time = 3600; // 1 hour = 3600 secs
 $_SESSION['token'] = bin2hex(random_bytes(32));

@@ -12,14 +12,14 @@
             <form method="post" class="form-group">
                 <div class="form-group">
                     <label for="name" >Name:</label>
-                    <span id="name-warn" style="display:inline;color:red"> <?= !empty($error["name"]) ? $error["name"] : "" ?></span>
+                    <span id="name-warn" style="display:inline;color:red"> <?= $errors["name"] ?></span>
                     <input type="text" class="form-control" id="name" name="name" 
                         value="<?= !empty($trimmed_post["name"]) ? html_escape($trimmed_post["name"]) : '' ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email address:</label>
-                    <span id="emal-warn" style="display:inline;color:red"> <?= !empty($error["email"]) ? $error["email"] : '' ?></span>
+                    <span id="emal-warn" style="display:inline;color:red"> <?= $errors["email"] ?></span>
                     <input type="email" class="form-control" id="email" name="email" 
                         value="<?= !empty($trimmed_post["email"]) ? html_escape($trimmed_post["email"]) : '' ?>">
                     <small id="emailHelp" class="form-text text-muted">Colin will never share your email with anyone else.</small>
@@ -27,14 +27,14 @@
 
                 <div class="form-group">
                     <label for="subject">Subject:</label>
-                    <span id="subject-warn" style="display:inline;color:red"> <?= !empty($error["subject"]) ? $error["subject"] : '' ?></span>
+                    <span id="subject-warn" style="display:inline;color:red"> <?= $errors["subject"] ?></span>
                     <input type="text" class="form-control" id="subject" name="subject" 
                         value="<?= !empty($trimmed_post["subject"]) ? html_escape($trimmed_post["subject"]) : '' ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="message">Message:</label>
-                    <span id="message-warn" style="display:inline;color:red"> <?= !empty($error["message"]) ? $error["message"] : '' ?></span>
+                    <span id="message-warn" style="display:inline;color:red"> <?= $errors["message"] ?></span>
                     <textarea class="form-control" id="message" name="message" rows="3"><?= !empty($trimmed_post["message"]) ? html_escape($trimmed_post["message"]) : '' ?></textarea>
                 </div>
 
@@ -47,7 +47,7 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" value="yes" name="not_robot_check" id="not_robot_check" <?= !empty($trimmed_post["not_robot_check"]) ? 'checked' : '' ?>>
                         <label for="not_robot_check" class="form-check-label">I am a not robot.</label>
-                        <span id="robot-warn" style="color:red"> <?= !empty($error["robot"]) ? $error["robot"] : "" ?></span>
+                        <span id="robot-warn" style="color:red"> <?= $errors["robot"] ?></span>
                     </div>
                 </fieldset>
                 <!-- invalid token for testing -->
